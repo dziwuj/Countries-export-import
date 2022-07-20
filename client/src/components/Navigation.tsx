@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState } from "react";
 
 type Props = {
     maxPages: number;
@@ -9,7 +9,7 @@ type Props = {
 const Navigation: React.FC<Props> = ({ maxPages, page, setPage }) => {
     const [currentPage, setCurrentPage] = useState<number>(page);
     return (
-        <div className="pagination">
+        <div className="navigation">
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
