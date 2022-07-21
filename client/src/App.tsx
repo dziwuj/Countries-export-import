@@ -3,15 +3,16 @@ import React, { Component } from "react";
 import "./App.scss";
 import Navigation from "./components/Navigation";
 import Table from "./components/Table";
+import Filters from "./components/Filters";
 
 interface IProps {}
 
 interface IState {
     data?: any[];
     isLoading?: boolean;
-    page?: number;
-    pageCount?: number;
-    filters?: {
+    page: number;
+    pageCount: number;
+    filters: {
         productId?: number | null;
         productCode?: string | null;
         minYear?: number | null;
@@ -24,6 +25,8 @@ interface IState {
         partner?: string | null;
         rowsPerPage?: number;
     };
+    order: string;
+    cat: string;
 }
 
 class App extends Component<IProps, IState> {
@@ -48,17 +51,27 @@ class App extends Component<IProps, IState> {
                 partner: null,
                 rowsPerPage: 50,
             },
+            order: "asc",
+            cat: "location_code",
         };
     }
     componentDidMount() {
         this.getPageCount();
-        // this.getAllRecords();
-        this.getFiltered();
+        this.getAllRecords();
+        // this.getFiltered();
     }
     // fetching the GET route from the Express server which matches the GET route from server.js
     async getAllRecords() {
         this.setState({ ...this.state, isLoading: true });
-        fetch(`/all/${this.state.page}`)
+        console.log(this.state.order, this.state.cat, this.state.page);
+        fetch(
+            `/sort?` +
+                new URLSearchParams({
+                    order: this.state.order || "asc",
+                    cat: this.state.cat || "location_code",
+                    page: this.state.page!.toString(),
+                })
+        )
             .then((res) => res.json())
             .then((res) => {
                 this.setState({ data: res, isLoading: false });
@@ -70,23 +83,34 @@ class App extends Component<IProps, IState> {
     }
 
     async getFiltered() {
-        console.log(this.state.filters);
-        this.setState({ ...this.state, isLoading: true });
-        fetch(`/filter/${this.state.page}`, {
-            method: "POST",
-            body: JSON.stringify(this.state.filters),
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-        })
+        // this.setState({ ...this.state, isLoading: true });
+        console.log(this.state.order, this.state.cat, this.state.page);
+        fetch(
+            `/filter?` +
+                new URLSearchParams({
+                    minYear: this.state.filters!.minYear?.toString() || "1962",
+                    maxYear: this.state.filters!.maxYear?.toString() || "2018",
+                    minImport: this.state.filters!.minImport?.toString() || "0",
+                    maxImport:
+                        this.state.filters!.maxImport?.toString() ||
+                        "176932483072",
+                    minExport: this.state.filters!.minExport?.toString() || "0",
+                    maxExport:
+                        this.state.filters!.maxExport?.toString() ||
+                        "176932483072",
+                    location: this.state.filters!.location || "",
+                    partner: this.state.filters!.partner || "",
+                    page: this.state.page!.toString(),
+                })
+        )
             .then((res) => res.json())
             .then((res) => {
-                this.setState({ data: res, isLoading: false });
+                // this.setState({ data: res, isLoading: false });
+                console.log(res);
             })
             .catch((err) => {
                 console.log(err);
-                this.setState({ ...this.state, isLoading: false });
+                // this.setState({ ...this.state, isLoading: false });
             });
     }
 
@@ -107,6 +131,11 @@ class App extends Component<IProps, IState> {
     render() {
         return (
             <div className="App">
+                <Filters
+                    getFiltered={(e) => {
+                        this.setState({ ...this.state, filters: e });
+                    }}
+                />
                 {this.state.isLoading ? (
                     <p>Loading...</p>
                 ) : (
@@ -124,7 +153,25 @@ class App extends Component<IProps, IState> {
                             }}
                         />
 
-                        <Table data={this.state.data || []} />
+                        <Table
+                            data={this.state.data || []}
+                            page={this.state.page || 1}
+                            sequence={this.state.order || "asc"}
+                            cat={this.state.cat || "location_code"}
+                            sort={(i) => {
+                                if (
+                                    this.state.order === "asc" &&
+                                    i === this.state.cat
+                                ) {
+                                    this.setState({ order: "desc" });
+                                } else {
+                                    this.setState({ order: "asc" });
+                                }
+                                this.setState({ cat: i }, () => {
+                                    this.getAllRecords.bind(this)();
+                                });
+                            }}
+                        />
 
                         <Navigation
                             maxPages={Math.ceil(

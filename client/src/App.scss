@@ -124,3 +124,42 @@
     background: #f8f8f8;
     border-bottom: 1px solid #e6e4e4;
 }
+
+.filters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    select {
+        margin: 0 20px 0px 5px;
+    }
+}
+
+.range-sliders {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button-holder {
+    text-align: center;
+}
+
+.countries {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.number-input {
+    display: flex;
+    justify-content: space-around;
+    .min,
+    .max {
+        width: 40%;
+        input {
+            width: 100%;
+        }
+    }
+}
