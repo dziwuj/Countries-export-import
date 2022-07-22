@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, FunctionComponent } from "react";
 
 type Props = {
     data: any[];
@@ -8,7 +8,7 @@ type Props = {
     sort: (cat: string) => void;
 };
 
-const Table: React.FunctionComponent<Props> = ({
+const Table: FunctionComponent<Props> = ({
     data,
     page,
     sequence,
@@ -32,7 +32,7 @@ const Table: React.FunctionComponent<Props> = ({
                             }}
                         >
                             location_code
-                            {sequence === "asc" && cat === "locaton_code" ? (
+                            {sequence === "asc" && cat === "location_code" ? (
                                 <>▲</>
                             ) : cat !== "location_code" ? null : (
                                 <>▼</>
