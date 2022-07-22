@@ -1,6 +1,7 @@
-import { useState, FunctionComponent } from "react";
+import { useState, FunctionComponent, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 function valuetext(value: number) {
     return `${value}`;
@@ -23,21 +24,31 @@ const RangeSlider: FunctionComponent<Props> = ({ min, max, id, callback }) => {
         a.value = value[0].toString();
         const b = document.getElementById(`${id}-max`)! as HTMLInputElement;
         b.value = value[1].toString();
-        callback(value);
     };
+
+    useEffect(() => {
+        callback(value);
+        // eslint-disable-next-line
+    }, [value]);
 
     return (
         <>
             <Box sx={{ width: 300 }}>
-                <Slider
-                    getAriaLabel={() => "Range"}
-                    value={value}
-                    onChange={handleChange}
-                    valueLabelDisplay="auto"
-                    getAriaValueText={valuetext}
-                    min={min}
-                    max={max}
-                />
+                <ThemeProvider
+                    theme={createTheme({
+                        palette: { primary: { main: "#4fc3a1" } },
+                    })}
+                >
+                    <Slider
+                        getAriaLabel={() => "Range"}
+                        value={value}
+                        onChange={handleChange}
+                        valueLabelDisplay="auto"
+                        getAriaValueText={valuetext}
+                        min={min}
+                        max={max}
+                    />
+                </ThemeProvider>
             </Box>
             <div className="number-input">
                 <div className="min">

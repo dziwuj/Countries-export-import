@@ -47,6 +47,15 @@
     background: #f8f8f8;
 }
 
+.text-holder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: auto;
+    height: 1600px;
+}
+
 /* Responsive */
 
 @media (max-width: 767px) {
@@ -114,6 +123,13 @@
         display: block;
         text-align: center;
     }
+    .chart {
+        width: 100%;
+        height: auto;
+    }
+    .text-holder {
+        height: 500px;
+    }
 }
 
 .navigation {
@@ -146,7 +162,10 @@
     text-align: center;
 }
 
-.countries {
+.countries,
+.products,
+.chart,
+.center {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -162,4 +181,37 @@
             width: 100%;
         }
     }
+}
+
+.custom-tooltip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    p {
+        font-size: 1rem;
+        margin: 0;
+    }
+    .tooltip-background {
+        position: absolute;
+        top: -10%;
+        left: -10%;
+        width: 120%;
+        height: 120%;
+        background: rgba(130, 130, 130, 0.5);
+        z-index: -1;
+        border-radius: 10px;
+    }
+}
+
+button,
+input.form-button {
+    background: #4fc3a1;
+    border: none;
+    border-radius: 30px;
+    padding: 5px 10px;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
 }

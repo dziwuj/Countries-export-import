@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { FunctionComponent, useState } from "react";
 
 type Props = {
-    maxPages: number;
+    maxPages: number | string;
     page: number;
     setPage: (page: number) => void;
 };
 
-const Navigation: React.FC<Props> = ({ maxPages, page, setPage }) => {
+const Navigation: FunctionComponent<Props> = ({ maxPages, page, setPage }) => {
     const [currentPage, setCurrentPage] = useState<number>(page);
     return (
         <div className="navigation">
@@ -16,17 +16,16 @@ const Navigation: React.FC<Props> = ({ maxPages, page, setPage }) => {
                     setPage(currentPage);
                 }}
             >
-                <label>Page:</label>
+                <label>Page: </label>
                 <input
                     type="number"
                     min="1"
-                    max={maxPages}
                     value={currentPage}
                     onChange={(e) => {
                         setCurrentPage(parseInt(e.target.value));
                     }}
                 />
-                <span>/</span>
+                <span> / </span>
                 <span>{maxPages}</span>
                 <button type="submit">Go to</button>
             </form>

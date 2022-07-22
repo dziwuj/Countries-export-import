@@ -11,6 +11,8 @@ type Props = {
         maxExport?: number | null;
         location?: string | null;
         partner?: string | null;
+        productId?: string | null;
+        productCode?: string | null;
     }) => void;
 };
 
@@ -24,6 +26,9 @@ const Filters: FunctionComponent<Props> = ({ getFiltered }) => {
         locations: [],
         partners: [],
     });
+    const [productCode, setProductCode] = useState<string[]>([]);
+    const [productId, setProductId] = useState<number[]>([]);
+
     const [maxImport, setMaxImport] = useState<number>(-1);
     const [maxExport, setMaxExport] = useState<number>(-1);
 
@@ -78,10 +83,40 @@ const Filters: FunctionComponent<Props> = ({ getFiltered }) => {
         }
     }
 
+    async function getProductCode() {
+        try {
+            // setLoading(true);
+            const response = await fetch(`/product_code`);
+
+            const json = await response.json();
+
+            setProductCode(["-", ...json]);
+            // setLoading(false);
+        } catch (error) {
+            // setLoading(false);
+        }
+    }
+
+    async function getProductId() {
+        try {
+            // setLoading(true);
+            const response = await fetch(`/product_id`);
+
+            const json = await response.json();
+
+            setProductId(["-", ...json]);
+            // setLoading(false);
+        } catch (error) {
+            // setLoading(false);
+        }
+    }
+
     useEffect(() => {
-        getCountries();
         getMaxImport();
         getMaxExport();
+        getCountries();
+        getProductId();
+        getProductCode();
         // eslint-disable-next-line
     }, []);
 
@@ -90,8 +125,8 @@ const Filters: FunctionComponent<Props> = ({ getFiltered }) => {
             <h1>Filters</h1>
             {maxImport !== -1 &&
             maxExport !== -1 &&
-            countries.partners !== [] &&
-            countries.locations !== [] ? (
+            countries.locations !== [] &&
+            countries.partners !== [] ? (
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
@@ -101,6 +136,12 @@ const Filters: FunctionComponent<Props> = ({ getFiltered }) => {
                         const par = document.getElementById(
                             "partners"
                         ) as HTMLSelectElement;
+                        const prodId = document.getElementById(
+                            "productId"
+                        ) as HTMLSelectElement;
+                        const prodCode = document.getElementById(
+                            "productCode"
+                        ) as HTMLSelectElement;
 
                         getFiltered({
                             minYear: year[0],
@@ -109,17 +150,14 @@ const Filters: FunctionComponent<Props> = ({ getFiltered }) => {
                             maxImport: importRange[1],
                             minExport: exportRange[0],
                             maxExport: exportRange[1],
-                            location: loc.value === "-" ? null : loc.value,
-                            partner: par.value === "-" ? null : loc.value,
+                            location: loc.value === "-" ? "" : loc.value,
+                            partner: par.value === "-" ? "" : par.value,
+                            productId: prodId.value === "-" ? "" : prodId.value,
+                            productCode:
+                                prodCode.value === "-" ? "" : prodCode.value,
                         });
                     }}
                 >
-                    {/* <label>Search : </label>
-                <input
-                    type="text"
-                    onChange={(e) => setSearch(e.target.value)}
-                /> */}
-
                     <div className="countries">
                         <label htmlFor="locations">Locations: </label>
                         <select id="locations">
@@ -135,6 +173,30 @@ const Filters: FunctionComponent<Props> = ({ getFiltered }) => {
                         <label htmlFor="partners">Partners: </label>
                         <select id="partners">
                             {countries.partners.map((item, i) => {
+                                return (
+                                    <option value={item} key={i}>
+                                        {item}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                    </div>
+
+                    <div className="products">
+                        <label htmlFor="productId">Products id: </label>
+                        <select id="productId">
+                            {productId.map((item, i) => {
+                                return (
+                                    <option value={item} key={i}>
+                                        {item}
+                                    </option>
+                                );
+                            })}
+                        </select>
+
+                        <label htmlFor="productCode">Sitc product code: </label>
+                        <select id="productCode">
+                            {productCode.map((item, i) => {
                                 return (
                                     <option value={item} key={i}>
                                         {item}
@@ -190,7 +252,7 @@ const Filters: FunctionComponent<Props> = ({ getFiltered }) => {
                         <input
                             className="form-button"
                             type="submit"
-                            value="search"
+                            value="Apply filters"
                         />
                     </div>
                 </form>

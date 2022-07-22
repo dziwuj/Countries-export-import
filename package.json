@@ -4,7 +4,7 @@
   "description": "React App",
   "main": "index.js",
   "scripts": {
-    "go": "nodemon index.js"
+    "serve": "nodemon index.js"
   },
   "repository": {
     "type": "git",
