@@ -36,11 +36,8 @@ const Filters: FunctionComponent<Props> = ({ getFiltered }) => {
     const [importRange, setImportRange] = useState<number[]>([0, maxImport]);
     const [exportRange, setExportRange] = useState<number[]>([0, maxExport]);
 
-    // const [loading, setLoading] = useState<boolean>(false);
-
     async function getCountries() {
         try {
-            // setLoading(true);
             const response = await fetch(`/countries`);
 
             const json = await response.json();
@@ -49,65 +46,59 @@ const Filters: FunctionComponent<Props> = ({ getFiltered }) => {
                 locations: ["-", ...json.locations],
                 partners: ["-", ...json.partners],
             });
-            // setLoading(false);
         } catch (error) {
-            // setLoading(false);
+            console.error(error);
         }
     }
 
     async function getMaxImport() {
         try {
-            // setLoading(true);
             const response = await fetch(`/import`);
 
             const json = await response.json();
 
             setMaxImport(json[0].import_value);
-            // setLoading(false);
         } catch (error) {
-            // setLoading(false);
+            console.error(error);
         }
     }
 
     async function getMaxExport() {
         try {
-            // setLoading(true);
             const response = await fetch(`/export`);
 
             const json = await response.json();
 
             setMaxExport(json[0].export_value);
-            // setLoading(false);
         } catch (error) {
-            // setLoading(false);
+            console.error(error);
         }
     }
 
     async function getProductCode() {
         try {
-            // setLoading(true);
+
             const response = await fetch(`/product_code`);
 
             const json = await response.json();
 
             setProductCode(["-", ...json]);
-            // setLoading(false);
         } catch (error) {
-            // setLoading(false);
+            console.error(error);
         }
     }
 
     async function getProductId() {
         try {
-            // setLoading(true);
+
             const response = await fetch(`/product_id`);
 
             const json = await response.json();
 
             setProductId(["-", ...json]);
-            // setLoading(false);
+
         } catch (error) {
-            // setLoading(false);
+            console.error(error);
         }
     }
 

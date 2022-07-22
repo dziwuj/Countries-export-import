@@ -16,7 +16,6 @@ type Props = {
 
 const RangeSlider: FunctionComponent<Props> = ({ min, max, id, callback }) => {
     const [value, setValue] = useState<number[]>([min, max]);
-    // const input_min = useRef(second);
 
     const handleChange = (event: Event, newValue: number | number[]) => {
         setValue(newValue as number[]);

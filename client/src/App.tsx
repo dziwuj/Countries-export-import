@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import logo from "./logo.svg";
 import "./App.scss";
 import Navigation from "./components/Navigation";
 import Table from "./components/Table";
@@ -74,6 +73,7 @@ function App() {
                 });
         } catch (error) {
             setIsLoading(false);
+            console.error(error);
         }
     }
 
@@ -88,7 +88,6 @@ function App() {
                 setStats(allData[1]);
                 setIsLoading(false);
             });
-        // this.getFiltered();
         console.log("did mount");
     }, []);
 
@@ -101,38 +100,6 @@ function App() {
     useEffect(() => {
         console.log(filters);
     }, [filters]);
-
-    // async getFiltered() {
-    //     // this.setState({ ...this.state, isLoading: true });
-    //     console.log(order, cat, page);
-    // fetch(
-    //     `/filter?` +
-    //         new URLSearchParams({
-    //             minYear: filters!.minYear?.toString() || "1962",
-    //             maxYear: filters!.maxYear?.toString() || "2018",
-    //             minImport: filters!.minImport?.toString() || "0",
-    //             maxImport:
-    //                 filters!.maxImport?.toString() ||
-    //                 "176932483072",
-    //             minExport: filters!.minExport?.toString() || "0",
-    //             maxExport:
-    //                 filters!.maxExport?.toString() ||
-    //                 "176932483072",
-    //             location: filters!.location || "",
-    //             partner: filters!.partner || "",
-    //             page: page!.toString(),
-    //         })
-    // )
-    //         .then((res) => res.json())
-    //         .then((res) => {
-    //             // this.setState({ data: res, isLoading: false });
-    //             console.log(res);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //             // this.setState({ ...this.state, isLoading: false });
-    //         });
-    // }
 
     return (
         <div className="App">
