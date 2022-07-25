@@ -200,6 +200,12 @@ app.get("/stats", (req, res) => {
                     {
                         $match: {
                             year: { $not: { $size: 0 } },
+                            sitc_product_code: req.query.productCode
+                                ? { $eq: req.query.productCode }
+                                : { $exists: true },
+                            product_id: req.query.productId
+                                ? { $eq: parseInt(req.query.productId) }
+                                : { $exists: true },
                         },
                     },
                     { $unwind: "$year" },
@@ -217,6 +223,7 @@ app.get("/stats", (req, res) => {
                 ])
                 .toArray();
 
+            console.log("stats");
             console.log(result);
 
             res.send(JSON.stringify(result));

@@ -79,17 +79,49 @@ function App() {
 
     useEffect(() => {
         setIsLoading(true);
-        Promise.all([fetch(`/pageCount`), fetch(`/stats`)])
-            .then((allResponses) => {
-                return Promise.all(allResponses.map((res) => res.json()));
-            })
-            .then((allData) => {
-                setPageCount(allData[0]);
-                setStats(allData[1]);
-                setIsLoading(false);
-            });
+
+        try {
+            fetch(`/pageCount`)
+                .then((res) => res.json())
+                .then((res) => {
+                    setPageCount(res);
+                });
+        } catch (error) {
+            setIsLoading(false);
+            console.error(error);
+        }
+
+        // Promise.all([
+        //     fetch(`/pageCount`),
+        // ])
+        //     .then((allResponses) => {
+        //         return Promise.all(allResponses.map((res) => res.json()));
+        //     })
+        //     .then((allData) => {
+        //         setPageCount(allData[0]);
+        //         setIsLoading(false);
+        //     });
         console.log("did mount");
     }, []);
+
+    useEffect(() => {
+        try {
+            fetch(
+                `/stats?` +
+                    new URLSearchParams({
+                        productCode: filters.productCode || "",
+                        productId: filters.productId || "",
+                    })
+            )
+                .then((res) => res.json())
+                .then((res) => {
+                    setStats(res);
+                });
+        } catch (error) {
+            setIsLoading(false);
+            console.error(error);
+        }
+    }, [filters.productCode, filters.productId]);
 
     useEffect(() => {
         console.log("get data");
@@ -151,6 +183,7 @@ function App() {
                 stats={stats.sort((a, b) => {
                     return a._id - b._id;
                 })}
+                // productCode={productCode || "all"}
             />
         </div>
     );

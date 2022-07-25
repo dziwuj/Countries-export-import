@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment, FunctionComponent } from "react";
+import categories from "../dictionary";
 
 type Props = {
     data: any[];
@@ -6,6 +7,16 @@ type Props = {
     sequence: string;
     cat: string;
     sort: (cat: string) => void;
+};
+
+type el = {
+    location_code: string;
+    partner_code: string;
+    product_id: string;
+    sitc_product_code: string;
+    import_value: number;
+    export_value: number;
+    year: number;
 };
 
 const Table: FunctionComponent<Props> = ({
@@ -114,7 +125,7 @@ const Table: FunctionComponent<Props> = ({
                     </tr>
                 </thead>
                 <tbody>
-                    {table.map((item, i) => {
+                    {table.map((item: el, i) => {
                         return (
                             <Fragment key={i}>
                                 <tr>
@@ -123,7 +134,13 @@ const Table: FunctionComponent<Props> = ({
                                     </td>
                                     <td>{item.partner_code}</td>
                                     <td>{item.product_id}</td>
-                                    <td>{item.sitc_product_code}</td>
+                                    <td>
+                                        {
+                                            (categories as any)[
+                                                item.sitc_product_code
+                                            ]
+                                        }
+                                    </td>
                                     <td>{item.import_value}</td>
                                     <td>{item.export_value}</td>
                                     <td>{item.year}</td>

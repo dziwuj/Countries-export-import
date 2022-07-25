@@ -1,5 +1,6 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import RangeSlider from "./RangeSlider";
+import categories from "../dictionary";
 
 type Props = {
     getFiltered: (filters: {
@@ -77,7 +78,6 @@ const Filters: FunctionComponent<Props> = ({ getFiltered }) => {
 
     async function getProductCode() {
         try {
-
             const response = await fetch(`/product_code`);
 
             const json = await response.json();
@@ -90,13 +90,11 @@ const Filters: FunctionComponent<Props> = ({ getFiltered }) => {
 
     async function getProductId() {
         try {
-
             const response = await fetch(`/product_id`);
 
             const json = await response.json();
 
             setProductId(["-", ...json]);
-
         } catch (error) {
             console.error(error);
         }
@@ -190,7 +188,7 @@ const Filters: FunctionComponent<Props> = ({ getFiltered }) => {
                             {productCode.map((item, i) => {
                                 return (
                                     <option value={item} key={i}>
-                                        {item}
+                                        {(categories as any)[item]}
                                     </option>
                                 );
                             })}
